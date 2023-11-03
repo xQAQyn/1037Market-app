@@ -3,6 +3,7 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import 'vant/lib/index.css';
+// import 'src/assets/css/iconfont.css';
 
 import { PullRefresh, List, Popup, Grid, GridItem, AddressEdit, AddressList, Icon, SubmitBar, CheckboxGroup, SwipeCell, Stepper, Checkbox, Field, Form, Tag, Button, Image as VanImage, Card, Tab, Tabs, Swipe, SwipeItem, Lazyload, Badge, Sidebar, SidebarItem, Collapse, CollapseItem } from 'vant';
 

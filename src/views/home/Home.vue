@@ -2,13 +2,12 @@
   <div id="home">
     <nav-bar>
       <!-- vue3插槽写法 -->
-      <template v-slot:center>图书商城</template>
+      <template v-slot:center>1037集市</template>
     </nav-bar>
 
     <!-- 复制一份tab-control选择性显示 -->
     <tab-control
-      v-show="isTabFixed"
-      :titles="['畅销', '新书', '精选']"
+      :titles="['推荐', '二手书', '闲置物品']"
       @tabClick="tabClick"
     ></tab-control>
 
@@ -16,15 +15,15 @@
     <div class="wrapper">
       <div class="content">
         <div ref="banref">
-          <home-swiper :banners="banners"></home-swiper>
+<!--          <home-swiper :banners="banners"></home-swiper>-->
 
-          <recommend-view :recommends="recommends"></recommend-view>
+<!--          <recommend-view :recommends="recommends"></recommend-view>-->
         </div>
 
-        <tab-control
-          :titles="['推荐', '二手书', '闲置物品']"
-          @tabClick="tabClick"
-        ></tab-control>
+<!--        <tab-control-->
+<!--          :titles="['推荐', '二手书', '闲置物品']"-->
+<!--          @tabClick="tabClick"-->
+<!--        ></tab-control>-->
 
         <!-- 因为是切换选项卡，所以只显示一个，只传一个类型的数据，需要知道当前是哪个选项卡，使用计算属性 -->
         <goods-list :goods="showGoods"></goods-list>
@@ -35,9 +34,7 @@
 </template>
 
 <script>
-//页面创建完成后调用onMonted
 import { onMounted, ref, reactive, computed, watchEffect, nextTick } from "vue";
-//从home.js中导入网络请求数据
 import { getHomeAllData, getHomeGoodsData } from "network/home";
 import HomeSwiper from "views/home/childComps/HomeSwiper";
 import NavBar from "components/common/navbar/NavBar";
@@ -59,9 +56,7 @@ export default {
     HomeSwiper,
   },
   setup() {
-    const banner = ref([]);
     const recommends = ref([]);
-    const banners = ref([]);
 
     //复制TabControl
     const isTabFixed = ref(false);
@@ -72,25 +67,14 @@ export default {
 
     //商品列表对象模型,里面三个选项卡的页码和列表
     const goods = reactive({
-      sales: {
-        page: 0,
-        list: [],
-      },
-      recommend: {
-        page: 0,
-        list: [],
-      },
-      new: {
-        page: 0,
-        list: [],
-      },
+      recommend: [],
+      books: [],
+      items: []
     });
 
-    //需要知道当前是哪个选项卡，默认类型是sales
-    const currentType = ref("sales");
-    //选项卡使用计算属性,返回当前显示的type.list
+    const currentType = ref("recommend");
     const showGoods = computed(() => {
-      return goods[currentType.value].list;
+      return goods[currentType.value];
     });
 
     let bscroll = reactive({});
@@ -109,58 +93,47 @@ export default {
       bscroll.scrollTo(0, 0);
     };
 
-    //onMounted是个箭头函数
     onMounted(() => {
-      getHomeAllData()
-        .then((res) => {
-          // console.log(res.slides);
-          banner.value = res.slides;
-          recommends.value = res.goods.data;
-          banners.value = res.slides;
-        })
-        .catch((err) => {});
-
       //分别传参获取三个选项卡的数据
-      getHomeGoodsData("sales").then((res) => {
-        // console.log(res);
-        //注意接收到list里
-        goods.sales.list = res.goods.data;
+
+        getHomeGoodsData("recommend").then((res) => {
+            goods.recommend.push(...res);
+        });
+
+        getHomeGoodsData("books").then((res) => {
+            goods.books.push(...res);
+        });
+
+      getHomeGoodsData("items").then((res) => {
+        goods.items.push(...res);
       });
 
-      getHomeGoodsData("recommend").then((res) => {
-        goods.recommend.list = res.goods.data;
-      });
-
-      getHomeGoodsData("new").then((res) => {
-        goods.new.list = res.goods.data;
-      });
-
-      //创建BS对象
+      // 创建BS对象
       bscroll = new BScroll(document.querySelector(".wrapper"), {
         probeType: 3, // 0, 1, 2, 3, 3 只要在运动就触发scroll事件
         click: true, // 是否允许点击
         pullUpLoad: true, //上拉加载更多， 默认是false
       });
 
-      //触发滚动事件
+      // 触发滚动事件
       bscroll.on("scroll", (position) => {
         // console.log(-position.y);
-        //悬停条件(返回顶部和Tabcontrol)
+      //   悬停条件(返回顶部和Tabcontrol)
         isShowBackTop.value = isTabFixed.value =
           -position.y > banref.value.offsetHeight;
       });
 
       //上拉加载数据,触发pullingUp
       bscroll.on("pullingUp", () => {
-        console.log("上拉加载更多");
+        // console.log("上拉加载更多");
         bscroll.refresh();
-        const page = goods[currentType.value].page + 1;
+        // const page = goods[currentType.value].page + 1;
 
         // 获取下拉数据
-        getHomeGoodsData(currentType.value, page).then((res) => {
-          goods[currentType.value].list.push(...res.goods.data);
-          goods[currentType.value].page += 1;
-        });
+        // getHomeGoodsData(currentType.value, page).then((res) => {
+        //   goods[currentType.value].push(...res.goods.data);
+        //   goods[currentType.value].page += 1;
+        // });
 
         // 完成上拉， 等数据请求完成， 要将新数据展示出来
         bscroll.finishPullUp();
@@ -188,7 +161,6 @@ export default {
     };
 
     return {
-      banner,
       recommends,
       tabClick,
       goods,
@@ -199,7 +171,6 @@ export default {
       banref,
       goback,
       isShowBackTop,
-      banners,
     };
   },
 };

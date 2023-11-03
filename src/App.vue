@@ -1,32 +1,42 @@
 <template>
   <router-view />
   <div id="nav">
-    <router-link to="/" class="tab-bar-item">
-      <div class="icon">
-        <i class="iconfont icon-shouye"></i>
-      </div>
-      <div>首页</div>
-    </router-link>
-    <router-link to="/category" class="tab-bar-item">
-      <div class="icon">
-        <i class="iconfont icon-fenlei"></i>
-      </div>
-      <div>分类</div>
-    </router-link>
-    <router-link to="/shopcart" class="tab-bar-item">
-      <div class="icon">
-        <van-badge :content="$store.state.cartCount" max="9">
-          <i class="iconfont icon-gouwuchezhengpin"></i>
-        </van-badge>
-      </div>
-      <div>购物车</div>
-    </router-link>
-    <router-link to="/profile" class="tab-bar-item">
-      <div class="icon">
-        <i class="iconfont icon-yonghu"></i>
-      </div>
-      <div>我的</div>
-    </router-link>
+      <router-link to="/" class="tab-bar-item">
+          <div class="icon">
+              <i class="iconfont icon-shouye"></i>
+          </div>
+          <div>首页</div>
+      </router-link>
+
+      <router-link to="/category" class="tab-bar-item">
+          <div class="icon">
+              <i class="iconfont icon-fenlei"></i>
+          </div>
+          <div>分类</div>
+      </router-link>
+
+      <router-link to="/publish" class="tab-bar-item">
+          <div class="icon">
+              <i class="iconfont icon-fabu"></i>
+          </div>
+          <div>发布</div>
+      </router-link>
+
+      <router-link to="/shopcart" class="tab-bar-item">
+          <div class="icon">
+              <van-badge :content="$store.state.cartCount" max="9">
+                  <i class="iconfont icon-gouwuche"></i>
+              </van-badge>
+          </div>
+          <div>购物车</div>
+      </router-link>
+
+      <router-link to="/profile" class="tab-bar-item">
+          <div class="icon">
+              <i class="iconfont icon-yonghu-xianxing"></i>
+          </div>
+          <div>我的</div>
+      </router-link>
   </div>
 </template>
 

@@ -1,37 +1,36 @@
 <template>
-  <div class="goods-item" @click="itemClick(product.id)">
-    <img v-lazy="product.cover_url" alt="" />
-    <div class="goods-info">
-      <p>{{ product.title }}</p>
-      <span class="price"><small>￥</small>{{ product.price }}</span>
-      <span class="collect">{{ product.collects_count }}</span>
+    <div class="goods-item" @click="itemClick(productDetail.id)">
+<!--    <img v-lazy="product.cover_url" alt="" />-->
+        <img v-lazy="tempImg" alt=""/>
+      <div class="goods-info">
+          <p>{{ productDetail.title }}</p>
+          <span class="price"><small>￥</small>{{ productDetail.price }}</span>
+<!--          <span class="collect">{{ product.collects_count }}</span>-->
+      </div>
     </div>
-  </div>
 </template>
 
-<script>
+<script setup>
 import { useRouter } from "vue-router";
-export default {
-  props: {
-    product: {
-      type: Object,
-      default() {
-        return {};
-      },
-    },
-  },
+import { onMounted, ref } from "vue"
+import { getDetail } from "network/detail"
+const props = defineProps(["productId"])
 
-  setup() {
-    const router = useRouter();
-    const itemClick = (id) => {
-      router.push({ path: "/detail", query: { id } });
-    };
-    return {
-      itemClick,
-      router,
-    };
-  },
+const router = useRouter();
+const productDetail = ref({})
+const tempImg = ref('https://picgo-xqaqyn.oss-cn-shanghai.aliyuncs.com/img/b_256781c21be0a7ed01ebd36a6d7c72c0.jpg')
+const itemClick = (id) => {
+    router.push({ path: "/detail", query: { id } });
 };
+
+onMounted(() => {
+    // console.log('item id:',props.productId)
+    getDetail(props.productId).then((res) => {
+        // console.log("response:",res)
+        productDetail.value = res
+        // console.log("detail:",productDetail)
+    })
+})
 </script>
 
 <style scoped lang="scss">
@@ -75,7 +74,7 @@ export default {
       width: 14px;
       height: 14px;
       top: -1px;
-      background: url("~assets/images/collect.png") 0 0/14px 14px;
+      //background: url("~assets/images/collect.png") 0 0/14px 14px;
     }
   }
 }

@@ -7,6 +7,7 @@ const ShopCart = () => import('views/shopcart/ShopCart');
 const Profile = () => import('views/profile/Profile');
 const Register = () => import('views/profile/Register');
 const Login = () => import('views/profile/Login')
+const Publish = () => import('views/publish/Publish')
 import { Notify } from "vant";
 
 
@@ -17,7 +18,7 @@ const routes = [
     component: Home,
     //添加浏览器导航栏标题
     meta: {
-      title: '图书兄弟'
+      title: '1037集市'
     }
   },
   {
@@ -25,7 +26,15 @@ const routes = [
     name: 'Category',
     component: Category,
     meta: {
-      title: '图书兄弟--分类'
+      title: '1037集市--分类'
+    }
+  },
+  {
+    path: '/publish',
+    name: 'Publish',
+    component: Publish,
+    meta: {
+      title: '发布新商品'
     }
   },
   {
@@ -33,7 +42,7 @@ const routes = [
     name: 'Detail',
     component: Detail,
     meta: {
-      title: '图书兄弟--商品详情'
+      title: '商品详情'
     }
   },
   {
@@ -41,7 +50,7 @@ const routes = [
     name: 'ShopCart',
     component: ShopCart,
     meta: {
-      title: '图书兄弟--购物车',
+      title: '购物车',
       isAuthRequired: true
     }
   },
@@ -50,7 +59,7 @@ const routes = [
     name: 'profile',
     component: Profile,
     meta: {
-      title: '图书兄弟--个人中心',
+      title: '个人中心',
       isAuthRequired: true
     }
   },
