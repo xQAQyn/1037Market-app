@@ -1,5 +1,5 @@
 <template>
-    <div class="goods-item" @click="itemClick(productDetail.id)">
+    <div class="goods-item" @click="itemClick()">
 <!--    <img v-lazy="product.cover_url" alt="" />-->
         <img v-lazy="tempImg" alt=""/>
       <div class="goods-info">
@@ -19,8 +19,8 @@ const props = defineProps(["productId"])
 const router = useRouter();
 const productDetail = ref({})
 const tempImg = ref('https://picgo-xqaqyn.oss-cn-shanghai.aliyuncs.com/img/b_256781c21be0a7ed01ebd36a6d7c72c0.jpg')
-const itemClick = (id) => {
-    router.push({ path: "/detail", query: { id } });
+const itemClick = () => {
+    router.push({ path: `/detail/${props.productId}`});
 };
 
 onMounted(() => {

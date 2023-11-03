@@ -38,7 +38,7 @@ const routes = [
     }
   },
   {
-    path: '/detail',
+    path: '/detail/:id',
     name: 'Detail',
     component: Detail,
     meta: {
@@ -68,7 +68,7 @@ const routes = [
     name: 'register',
     component: Register,
     meta: {
-      title: '图书兄弟--用户注册'
+      title: '用户注册'
     }
   },
   {
@@ -76,7 +76,7 @@ const routes = [
     name: 'login',
     component: Login,
     meta: {
-      title: '图书兄弟--用户登录'
+      title: '用户登录'
     }
   }
 ]
